@@ -3,69 +3,76 @@
 // twitter homeworkLiriBot
 var request = require("request");//use this to access OMDB
 var inquirer = require("inquirer");//this awesome prompt package
-var twitter = require("twitter");//* [Twitter](https://www.npmjs.com/package/twitter)
+var Twitter = require("twitter");//* [Twitter](https://www.npmjs.com/package/twitter)
 var spotify = require("node-spotify-api");//[Node-Spotify-API](https://www.npmjs.com/package/node-spotify-api)
 var geocoder = require("dotenv");//* [DotEnv](https://www.npmjs.com/package/dotenv)
 
 require("dotenv").config();
-var keys = require("./keys.js")
 
 
+var keys = require("./keys.js");
+// console.log(keys.twitter);
+var T = new Twitter(keys.twitter);
 // console.log(client);
-inquirer.prompt([
-  {
-    type: "list",
-    message: "Which command do you choose?",
-    choices: ["my-tweets", "spotify-this-song", "movie-this", "do-what-it-says"],
-    name: "command"
-  }
-]).then(function (inquirerResponse) {
-  switch (inquirerResponse.command) {
-    case "my-tweets":
-      tweets();
-      break;
-
-    case "spotify-this-song":
-      songs();
-      break;
-
-    case "movie-this":
-      movies();
-      break;
-
-    case "do-what-it-says":
-      doit();
-      break;
-  }
-});
-
-function tweets() {
-  var client = new twitter(keys.twitter);
-  client.post('statuses/update', { status: 'I Love Twitter' })
-    .then(function (tweet) {
-      console.log(tweet);
-    })
-    .catch(function (error) {
-      throw error;
-    })
+var params ={
+  q: '@optccaccount',
+  count: 2
 }
+T.get('search/tweets', params, function(err, data, response) {
+  if(!err){
+    // This is where the magic will happen
+  } else {
+    console.log(err);
+  }
+})
 
-function songs() {
-}
+// tweets();
+
+// // console.log(client);
+// inquirer.prompt([
+//   {
+//     type: "list",
+//     message: "Which command do you choose?",
+//     choices: ["my-tweets", "spotify-this-song", "movie-this", "do-what-it-says"],
+//     name: "command"
+//   }
+// ]).then(function (inquirerResponse) {
+//   switch (inquirerResponse.command) {
+//     case "my-tweets":
+//       tweets();
+//       break;
+
+//     case "spotify-this-song":
+//       songs();
+//       break;
+
+//     case "movie-this":
+//       movies();
+//       break;
+
+//     case "do-what-it-says":
+//       doit();
+//       break;
+//   }
+// });
+
+function tweets(){}
+
+function songs() {}
 
 
 function movies() {
-  request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function (error, response, body) {
+  // request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
-    // If the request is successful (i.e. if the response status code is 200)
-    if (!error && response.statusCode === 200) {
+  //   // If the request is successful (i.e. if the response status code is 200)
+  //   if (!error && response.statusCode === 200) {
 
-      // Parse the body of the site and recover just the imdbRating
-      // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-      console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
-    }
+  //     // Parse the body of the site and recover just the imdbRating
+  //     // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+  //     console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+  //   }
 
-  });
+  // });
 }
 function doit() { }
 
