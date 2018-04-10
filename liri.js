@@ -12,20 +12,22 @@ require("dotenv").config();
 
 var keys = require("./keys.js");
 // console.log(keys.twitter);
-var T = new Twitter(keys.twitter);
+var client = new Twitter(keys.twitter);
 // console.log(client);
-var params ={
-  q: '@optccaccount',
-  count: 2
+var params = {
+  user_id: 'optccaccount',
+  count: 20
 }
-T.get('search/tweets', params, function(err, data, response) {
-  if(!err){
-    // This is where the magic will happen
-  } else {
-    console.log(err);
-  }
-})
 
+client.get('statuses/user_timeline', params, function (error, tweets, response) {
+  if (!error) {
+    // console.log(tweets);
+    for (i = 0; i < tweets.length; i++) {
+      console.log(tweets[i].text);
+    }
+
+  }
+});
 // tweets();
 
 // // console.log(client);
@@ -56,9 +58,9 @@ T.get('search/tweets', params, function(err, data, response) {
 //   }
 // });
 
-function tweets(){}
+function tweets() { }
 
-function songs() {}
+function songs() { }
 
 
 function movies() {
