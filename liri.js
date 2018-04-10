@@ -10,56 +10,62 @@ var geocoder = require("dotenv");//* [DotEnv](https://www.npmjs.com/package/dote
 require("dotenv").config();
 
 
-var keys = require("./keys.js");
-// console.log(keys.twitter);
-var client = new Twitter(keys.twitter);
-// console.log(client);
-var params = {
-  user_id: 'optccaccount',
-  count: 20
-}
+inquirer.prompt([
+  {
+    type: "list",
+    message: "Which command do you choose?",
+    choices: ["my-tweets", "spotify-this-song", "movie-this", "do-what-it-says"],
+    name: "command"
+  }
 
-client.get('statuses/user_timeline', params, function (error, tweets, response) {
-  if (!error) {
-    // console.log(tweets);
-    for (i = 0; i < tweets.length; i++) {
-      console.log(tweets[i].text);
-    }
-
+]).then(function (inquirerResponse) {
+  switch (inquirerResponse.command) {
+    case "my-tweets":
+      tweets();
+      break;
+    case "spotify-this-song":
+      songs();
+      break;
+    case "movie-this":
+      movies();
+      break;
+    case "do-what-it-says":
+      doit();
+      break;
   }
 });
-// tweets();
 
-// // console.log(client);
-// inquirer.prompt([
-//   {
-//     type: "list",
-//     message: "Which command do you choose?",
-//     choices: ["my-tweets", "spotify-this-song", "movie-this", "do-what-it-says"],
-//     name: "command"
-//   }
-// ]).then(function (inquirerResponse) {
-//   switch (inquirerResponse.command) {
-//     case "my-tweets":
-//       tweets();
-//       break;
+function tweets() {
 
-//     case "spotify-this-song":
-//       songs();
-//       break;
+  var keys = require("./keys.js");
+  // console.log(keys.twitter);
+  var client = new Twitter(keys.twitter);
+  // console.log(client);
+  var params = {
+    user_id: 'optccaccount',
+    count: 20
+  }
+  //finally found that I wanted user timeline! exciting
+  client.get('statuses/user_timeline', params, function (error, tweets, response) {
+    if (!error) {
+      // grab the tweets using tweets.text
+      for (i = 0; i < tweets.length; i++) {
+        console.log(tweets[i].text);
+      }
+    }
+  });
+}
 
-//     case "movie-this":
-//       movies();
-//       break;
-
-//     case "do-what-it-says":
-//       doit();
-//       break;
-//   }
-// });
-
-function tweets() { }
-
+{
+  type: "input",
+  name: "artist",
+  message: "artist Name?"
+},
+{
+  type: "input",
+  name: "song",
+  message: "Song Name?"
+},
 function songs() { }
 
 
