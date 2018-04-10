@@ -8,7 +8,7 @@ var spotify = require("node-spotify-api");//[Node-Spotify-API](https://www.npmjs
 var geocoder = require("dotenv");//* [DotEnv](https://www.npmjs.com/package/dotenv)
 
 require("dotenv").config();
-
+var keys = require("./keys.js");
 
 inquirer.prompt([
   {
@@ -17,13 +17,12 @@ inquirer.prompt([
     choices: ["my-tweets", "spotify-this-song", "movie-this", "do-what-it-says"],
     name: "command"
   }
-
 ]).then(function (inquirerResponse) {
   switch (inquirerResponse.command) {
     case "my-tweets":
       tweets();
       break;
-    case "spotify-this-song":
+      case "spotify-this-song":
       songs();
       break;
     case "movie-this":
@@ -37,7 +36,7 @@ inquirer.prompt([
 
 function tweets() {
 
-  var keys = require("./keys.js");
+  // var keys = require("./keys.js");
   // console.log(keys.twitter);
   var client = new Twitter(keys.twitter);
   // console.log(client);
@@ -56,17 +55,37 @@ function tweets() {
   });
 }
 
-{
-  type: "input",
-  name: "artist",
-  message: "artist Name?"
-},
-{
-  type: "input",
-  name: "song",
-  message: "Song Name?"
-},
-function songs() { }
+function songs() {
+  inquirer.prompt([
+    {
+      type: "text",
+      message: "Artist Name?",
+      name: "artist"
+    },
+    {
+      type: "text",
+      message: "Artist Name?",
+      name: "artist"
+    },
+  ]).then(function (inquirerResponse) {
+    var client = new Spotify(keys.twitter);
+    // console.log(client);
+    var params = {
+      user_id: 'optccaccount',
+      count: 20
+    }
+    //finally found that I wanted user timeline! exciting
+    client.get('statuses/user_timeline', params, function (error, tweets, response) {
+      if (!error) {
+        // grab the tweets using tweets.text
+        for (i = 0; i < tweets.length; i++) {
+          console.log(tweets[i].text);
+        }
+      }
+    });
+  }
+  });
+ }
 
 
 function movies() {
