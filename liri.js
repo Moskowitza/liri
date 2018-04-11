@@ -22,7 +22,7 @@ inquirer.prompt([
     case "my-tweets":
       tweets();
       break;
-      case "spotify-this-song":
+    case "spotify-this-song":
       songs();
       break;
     case "movie-this":
@@ -64,26 +64,19 @@ function songs() {
     },
     {
       type: "text",
-      message: "Artist Name?",
-      name: "artist"
+      message: "song Name?",
+      name: "song"
     },
   ]).then(function (inquirerResponse) {
-    var client = new Spotify(keys.twitter);
-    // console.log(client);
-    var params = {
-      user_id: 'optccaccount',
-      count: 20
+    if (inquirerResponse.artist && inquirerResponse.song) {
+      console.log("artist "+inquirerResponse.artist)
+      console.log("song "+inquirerResponse.song)
+    } else {
+      artist = "ace of base";
+      song = "the sign"
+      console.log("artist "+artist)
+      console.log("song "+ song)
     }
-    //finally found that I wanted user timeline! exciting
-    client.get('statuses/user_timeline', params, function (error, tweets, response) {
-      if (!error) {
-        // grab the tweets using tweets.text
-        for (i = 0; i < tweets.length; i++) {
-          console.log(tweets[i].text);
-        }
-      }
-    });
-  }
   });
  }
 
