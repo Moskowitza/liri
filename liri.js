@@ -75,23 +75,25 @@ function songs() {
       console.log("artist " + inquirerResponse.artist)
       console.log("song " + inquirerResponse.song)
     } else {
-      artist = "ace+of+base";
-      song = "the+sign"
-      console.log("Artist " + artist)
-      console.log("Song " + song)
+      artist = "Ace of Base";
+      song = "The Sign"
+
     };
     // run the query
     var spotify = new Spotify(keys.spotify);
 
     spotify
-    .search({ type: 'track', query: song, query:artist, limit:1 })
-    .then(function(response) {
-      console.log("is on album "+response.tracks.items[0].name);
-    })
-    .catch(function(err) {
-      console.log(err);
-    });;
-    //     * Artist(s)
+      .search({ type: 'track', query: song, query: artist, limit: 1 })
+      .then(function (response) {
+        console.log("Artist " + artist)
+        console.log("Song " + song)
+        console.log(response)
+        console.log(JSON.parse(response))
+        console.log("Is on album " + JSON.parse(response).album);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
 
     //  * The song's name
 
@@ -103,19 +105,50 @@ function songs() {
 }
 
 
-// function movies() {
-//   // request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function (error, response, body) {
+function movies() {
+  inquirer.prompt([
+    {
+      type: "text",
+      message: "What Movie are you interested in?",
+      name: "movie"
+    }
+  ]).then(function (inquirerResponse) {
+    //Validate answers were chosen, otherwise ... Nazi-Buddah
+    if (inquirerResponse.movie) {
+      movie = inquirerResponse.movie;
+    } else {
+      movie = "Mr.+Nobody";
+    };
+    request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
-//   //   // If the request is successful (i.e. if the response status code is 200)
-//   //   if (!error && response.statusCode === 200) {
+      // If the request is successful (i.e. if the response status code is 200)
+      if (!error && response.statusCode === 200) {
 
-//   //     // Parse the body of the site and recover just the imdbRating
-//   //     // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-//   //     console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
-//   //   }
+        // Parse the body of the site and recover just the imdbRating
+        // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+        // console.log(response)
+        // console.log(JSON.parse(body))
+        // * Title of the movie.
+        console.log("Move Title: " + JSON.parse(body).Title);
+        // * Year the movie came out.
+        console.log("Release Year " + JSON.parse(body).Year);
+        // * IMDB Rating of the movie.
+        console.log("IMDB Rating: " + JSON.parse(body).Rated);
+        // * Rotten Tomatoes Rating of the movie.
+        console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Rated);
+        // * Country where the movie was produced.
+        console.log("Country(s) of production: " + JSON.parse(body).Country);
+        // * Language of the movie.
+        console.log("Language: " + JSON.parse(body).Language);
+        // * Plot of the movie.
+        console.log("Plot: " + JSON.parse(body).Plot);
+        // * Actors in the movie.
+        console.log("Actors: " + JSON.parse(body).Actors);
+      }
+    });
+  });
+}
 
-//   // });
-// }
 // function doit() { }
 
 
