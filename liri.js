@@ -4,7 +4,7 @@
 var request = require("request");//use this to access OMDB
 var inquirer = require("inquirer");//this awesome prompt package
 var Twitter = require("twitter");//* [Twitter](https://www.npmjs.com/package/twitter)
-var spotify = require("node-spotify-api");//[Node-Spotify-API](https://www.npmjs.com/package/node-spotify-api)
+var Spotify = require("node-spotify-api");//[Node-Spotify-API](https://www.npmjs.com/package/node-spotify-api)
 var geocoder = require("dotenv");//* [DotEnv](https://www.npmjs.com/package/dotenv)
 
 require("dotenv").config();
@@ -64,37 +64,59 @@ function songs() {
     },
     {
       type: "text",
-      message: "song Name?",
+      message: "Song Name?",
       name: "song"
     },
   ]).then(function (inquirerResponse) {
+    //Validate answers were chosen, otherwise ... Nazi-Buddah
     if (inquirerResponse.artist && inquirerResponse.song) {
-      console.log("artist "+inquirerResponse.artist)
-      console.log("song "+inquirerResponse.song)
+      artist = inquirerResponse.artist;
+      song = inquirerResponse.song;
+      console.log("artist " + inquirerResponse.artist)
+      console.log("song " + inquirerResponse.song)
     } else {
-      artist = "ace of base";
-      song = "the sign"
-      console.log("artist "+artist)
-      console.log("song "+ song)
-    }
+      artist = "ace+of+base";
+      song = "the+sign"
+      console.log("Artist " + artist)
+      console.log("Song " + song)
+    };
+    // run the query
+    var spotify = new Spotify(keys.spotify);
+
+    spotify
+    .search({ type: 'track', query: song, query:artist, limit:1 })
+    .then(function(response) {
+      console.log("is on album "+response.tracks.items[0].name);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });;
+    //     * Artist(s)
+
+    //  * The song's name
+
+    //  * A preview link of the song from Spotify
+
+    //  * The album that the song is from
+
   });
- }
-
-
-function movies() {
-  // request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function (error, response, body) {
-
-  //   // If the request is successful (i.e. if the response status code is 200)
-  //   if (!error && response.statusCode === 200) {
-
-  //     // Parse the body of the site and recover just the imdbRating
-  //     // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-  //     console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
-  //   }
-
-  // });
 }
-function doit() { }
+
+
+// function movies() {
+//   // request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function (error, response, body) {
+
+//   //   // If the request is successful (i.e. if the response status code is 200)
+//   //   if (!error && response.statusCode === 200) {
+
+//   //     // Parse the body of the site and recover just the imdbRating
+//   //     // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+//   //     console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+//   //   }
+
+//   // });
+// }
+// function doit() { }
 
 
 // // Then run a request to the OMDB API with the movie specified
