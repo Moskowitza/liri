@@ -22,7 +22,7 @@ inquirer.prompt([
     case "my-tweets":
       tweets();
       break;
-      case "spotify-this-song":
+    case "spotify-this-song":
       songs();
       break;
     case "movie-this":
@@ -64,11 +64,11 @@ function songs() {
     },
     {
       type: "text",
-      message: "Artist Name?",
-      name: "artist"
+      message: "Song Name?",
+      name: "song"
     },
   ]).then(function (inquirerResponse) {
-    var client = new Spotify(keys.twitter);
+    var client = new Spotify(keys.spotify);
     // console.log(client);
     var params = {
       user_id: 'optccaccount',
