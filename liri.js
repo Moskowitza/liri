@@ -78,34 +78,20 @@ function songs() {
     } else {
       artist = "Ace of Base";
       song = "The Sign"
-
     };
     // run the query
-    var spotify = new Spotify(keys.spotify);
-
-    spotify
-      .search({ type: 'track', query: song, query: artist, limit: 1 })
-      .then(function (response) {
-        console.log("Artist " + artist)
-        console.log("Song " + song)
-        console.log(response)
-        console.log(JSON.parse(response))
-        console.log("Is on album " + JSON.parse(response).album);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-
-    //  * The song's name
-
-    //  * A preview link of the song from Spotify
-
-    //  * The album that the song is from
-
+    spotty();
   });
 }
-
-
+function spotty() {
+  var spotify = new Spotify(keys.spotify);
+  spotify.search({ type: 'album', query: song, query: artist, limit: 1 }, function (err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    console.log("Album name:" + data.albums.items[0].name);
+  });
+}
 function movies() {
   inquirer.prompt([
     {
@@ -171,7 +157,7 @@ function doit() {
         tweets();
         break;
       case "spotify-this-song":
-        songs();
+        spotty();
         break;
       case "movie-this":
         movies();
