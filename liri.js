@@ -89,7 +89,11 @@ function spotty() {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-    console.log("Album name:" + data.albums.items[0].name);
+    console.log(data.albums.items);
+    // console.log("Artist: "+artist);
+    // console.log("Song: "+song);
+    // console.log("Preview Link: "+ data.albums.items[0].external_urls.spotify);
+    // console.log("Album name: " + data.albums.items[0].name);
   });
 }
 function movies() {
@@ -100,7 +104,7 @@ function movies() {
       name: "movie"
     }
   ]).then(function (inquirerResponse) {
-    //Validate answers were chosen, otherwise ... Nazi-Buddah
+    //Validate answers were chosen, otherwise ... Nazi-Buddah 
     if (inquirerResponse.movie) {
       movie = inquirerResponse.movie;
     } else {
