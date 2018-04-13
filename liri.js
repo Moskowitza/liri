@@ -75,79 +75,75 @@ function songs() {
       console.log("artist " + inquirerResponse.artist)
       console.log("song " + inquirerResponse.song)
     } else {
-      artist = "Ace of Base";
-      song = "The Sign"
-
+      artist = "Ace+of+Base";
+      song = "The+Sign"
     };
     // run the query
     var spotify = new Spotify(keys.spotify);
-
-    spotify
-      .search({ type: 'track', query: song, query: artist, limit: 1 })
-      .then(function (response) {
-        console.log("Artist " + artist)
-        console.log("Song " + song)
-        console.log(response)
-        console.log(JSON.parse(response))
-        console.log("Is on album " + JSON.parse(response).album);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-
-    //  * The song's name
-
-    //  * A preview link of the song from Spotify
-
-    //  * The album that the song is from
-
-  });
-}
-
-
-function movies() {
-  inquirer.prompt([
-    {
-      type: "text",
-      message: "What Movie are you interested in?",
-      name: "movie"
-    }
-  ]).then(function (inquirerResponse) {
-    //Validate answers were chosen, otherwise ... Nazi-Buddah
-    if (inquirerResponse.movie) {
-      movie = inquirerResponse.movie;
-    } else {
-      movie = "Mr.+Nobody";
-    };
-    request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
-
-      // If the request is successful (i.e. if the response status code is 200)
-      if (!error && response.statusCode === 200) {
-
-        // Parse the body of the site and recover just the imdbRating
-        // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-        // console.log(response)
-        // console.log(JSON.parse(body))
-        // * Title of the movie.
-        console.log("Move Title: " + JSON.parse(body).Title);
-        // * Year the movie came out.
-        console.log("Release Year " + JSON.parse(body).Year);
-        // * IMDB Rating of the movie.
-        console.log("IMDB Rating: " + JSON.parse(body).Rated);
-        // * Rotten Tomatoes Rating of the movie.
-        console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Rated);
-        // * Country where the movie was produced.
-        console.log("Country(s) of production: " + JSON.parse(body).Country);
-        // * Language of the movie.
-        console.log("Language: " + JSON.parse(body).Language);
-        // * Plot of the movie.
-        console.log("Plot: " + JSON.parse(body).Plot);
-        // * Actors in the movie.
-        console.log("Actors: " + JSON.parse(body).Actors);
+    spotify.search({ type: 'album', query: song, query:artist, limit: 1 }, function (err, data) {
+      if (err) {
+        return console.log('Error occurred: ' + err);
       }
+      console.log(data.albums.items[0].name);
     });
   });
 }
+
+      // });
+      // spotify
+      //   .search({ type: 'album', query:song+artist, limit: 1 })
+      //   .then(function (response) {
+      //     console.log("Artist " + artist)
+      //     console.log("Song " + song)
+      //     console.log(JSON.stringify(response));
+      //     // console.log("Is on album " + JSON.parse(response).album);
+      //   })
+      //   .catch(function (err) {
+      //     console.log(err);
+      //   });
+function movies() {
+      inquirer.prompt([
+        {
+          type: "text",
+          message: "What Movie are you interested in?",
+          name: "movie"
+        }
+      ]).then(function (inquirerResponse) {
+        //Validate answers were chosen, otherwise ... Nazi-Buddah
+        if (inquirerResponse.movie) {
+          movie = inquirerResponse.movie;
+        } else {
+          movie = "Mr.+Nobody";
+        };
+        request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+
+          // If the request is successful (i.e. if the response status code is 200)
+          if (!error && response.statusCode === 200) {
+
+            // Parse the body of the site and recover just the imdbRating
+            // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+            // console.log(response)
+            // console.log(JSON.parse(body))
+            // * Title of the movie.
+            console.log("Move Title: " + JSON.parse(body).Title);
+            // * Year the movie came out.
+            console.log("Release Year " + JSON.parse(body).Year);
+            // * IMDB Rating of the movie.
+            console.log("IMDB Rating: " + JSON.parse(body).Rated);
+            // * Rotten Tomatoes Rating of the movie.
+            console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Rated);
+            // * Country where the movie was produced.
+            console.log("Country(s) of production: " + JSON.parse(body).Country);
+            // * Language of the movie.
+            console.log("Language: " + JSON.parse(body).Language);
+            // * Plot of the movie.
+            console.log("Plot: " + JSON.parse(body).Plot);
+            // * Actors in the movie.
+            console.log("Actors: " + JSON.parse(body).Actors);
+          }
+        });
+      });
+    }
 
 // function doit() { }
 
