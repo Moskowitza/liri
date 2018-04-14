@@ -89,9 +89,10 @@ function spotty() {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-    console.log(data.albums.items);
-    // console.log("Artist: "+artist);
-    // console.log("Song: "+song);
+    // console.log(data.albums.items);
+    console.log("Artist: "+artist);
+    console.log("Song: "+song);
+    console.log(data.albums);
     // console.log("Preview Link: "+ data.albums.items[0].external_urls.spotify);
     // console.log("Album name: " + data.albums.items[0].name);
   });
@@ -153,33 +154,28 @@ function doit() {
 
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(",");
-
+    // console.log(dataArr);
+    // dataArr[1].replace(/['"]+/g, '');
+    // console.log(dataArr[1]);
     // We will then re-display the content as an array for later use.
-    console.log(dataArr[0]);
+    // console.log(dataArr[0]);
     switch (dataArr[0]) {
       case "my-tweets":
         tweets();
         break;
       case "spotify-this-song":
+        artist=" ";
+        song= dataArr[1].replace(/['"]+/g, '').trim();  //need to do some stringery to get the quotes off this bugger
         spotty();
         break;
       case "movie-this":
         movies();
         break;
-      case "do-what-it-says":
-        doit();
-        break;
+      // case "do-what-it-says":
+      //   doit();
+      //   break;
     }
   });
 }
-
-
-// 4. `node liri.js do-what-it-says`
-
-//    * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
-
-//      * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
-
-//      * Feel free to change the text in that document to test out the feature for other commands.
 
 
