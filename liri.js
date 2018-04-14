@@ -70,7 +70,7 @@ function songs() {
     },
   ]).then(function (inquirerResponse) {
     //Validate answers were chosen, otherwise ... Nazi-Buddah
-    if (inquirerResponse.artist && inquirerResponse.song) {
+    if (inquirerResponse.artist || inquirerResponse.song) {
       artist = inquirerResponse.artist;
       song = inquirerResponse.song;
       console.log("artist " + inquirerResponse.artist)
@@ -85,16 +85,16 @@ function songs() {
 }
 function spotty() {
   var spotify = new Spotify(keys.spotify);
-  spotify.search({ type: 'album', query: song, query: artist, limit: 1 }, function (err, data) {
+  spotify.search({ type: 'track', query: song, query: artist, limit: 1 }, function (err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
     // console.log(data.albums.items);
     console.log("Artist: "+artist);
     console.log("Song: "+song);
-    console.log(data.albums);
-    // console.log("Preview Link: "+ data.albums.items[0].external_urls.spotify);
-    // console.log("Album name: " + data.albums.items[0].name);
+    // console.log(data);
+    console.log("Preview Link: "+ data.tracks.items[0].external_urls.spotify);
+    console.log("Album name: " + data.tracks.items[0].name);
   });
 }
 function movies() {
@@ -111,34 +111,38 @@ function movies() {
     } else {
       movie = "Mr.+Nobody";
     };
-    request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+    movied();
 
-      // If the request is successful (i.e. if the response status code is 200)
-      if (!error && response.statusCode === 200) {
-
-        // Parse the body of the site and recover just the imdbRating
-        // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-        // console.log(response)
-        // console.log(JSON.parse(body))
-        // * Title of the movie.
-        console.log("Move Title: " + JSON.parse(body).Title);
-        // * Year the movie came out.
-        console.log("Release Year " + JSON.parse(body).Year);
-        // * IMDB Rating of the movie.
-        console.log("IMDB Rating: " + JSON.parse(body).Rated);
-        // * Rotten Tomatoes Rating of the movie.
-        console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Rated);
-        // * Country where the movie was produced.
-        console.log("Country(s) of production: " + JSON.parse(body).Country);
-        // * Language of the movie.
-        console.log("Language: " + JSON.parse(body).Language);
-        // * Plot of the movie.
-        console.log("Plot: " + JSON.parse(body).Plot);
-        // * Actors in the movie.
-        console.log("Actors: " + JSON.parse(body).Actors);
-      }
-    });
   });
+}
+var movied=function(){
+request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+
+  // If the request is successful (i.e. if the response status code is 200)
+  if (!error && response.statusCode === 200) {
+
+    // Parse the body of the site and recover just the imdbRating
+    // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+    // console.log(response)
+    // console.log(JSON.parse(body))
+    // * Title of the movie.
+    console.log("Move Title: " + JSON.parse(body).Title);
+    // * Year the movie came out.
+    console.log("Release Year " + JSON.parse(body).Year);
+    // * IMDB Rating of the movie.
+    console.log("IMDB Rating: " + JSON.parse(body).Rated);
+    // * Rotten Tomatoes Rating of the movie.
+    console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Rated);
+    // * Country where the movie was produced.
+    console.log("Country(s) of production: " + JSON.parse(body).Country);
+    // * Language of the movie.
+    console.log("Language: " + JSON.parse(body).Language);
+    // * Plot of the movie.
+    console.log("Plot: " + JSON.parse(body).Plot);
+    // * Actors in the movie.
+    console.log("Actors: " + JSON.parse(body).Actors);
+  }
+});
 }
 
 function doit() {
@@ -169,7 +173,8 @@ function doit() {
         spotty();
         break;
       case "movie-this":
-        movies();
+        movie=dataArr[1].replace(/['"]+/g, '').trim();  //need to do some stringery to get the quotes off this bugger
+        movied();
         break;
       // case "do-what-it-says":
       //   doit();
