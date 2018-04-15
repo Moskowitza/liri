@@ -83,6 +83,7 @@ function songs() {
     spotty();
   });
 }
+// What a disaster to dig through
 function spotty() {
   var spotify = new Spotify(keys.spotify);
   spotify.search({ type: 'track', query:artist+"+"+song, limit: 3 }, function (err, data) {
@@ -92,7 +93,7 @@ function spotty() {
     // console.log(data.albums.items);
     console.log("Artist: "+artist);
     console.log("Song: "+song);
-    console.log(data.tracks.items[0]);
+    // console.log(data.tracks.items[0]);
     console.log("Preview Link: "+ data.tracks.items[0].album.external_urls.spotify);
     console.log("Album name: " + data.tracks.items[0].album.name);
   });
