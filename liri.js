@@ -73,8 +73,8 @@ function songs() {
     if (inquirerResponse.artist || inquirerResponse.song) {
       artist = inquirerResponse.artist;
       song = inquirerResponse.song;
-      console.log("artist " + inquirerResponse.artist)
-      console.log("song " + inquirerResponse.song)
+      console.log("input artist " + inquirerResponse.artist)
+      console.log("input song " + inquirerResponse.song)
     } else {
       artist = "Ace of Base";
       song = "The Sign"
@@ -85,16 +85,16 @@ function songs() {
 }
 function spotty() {
   var spotify = new Spotify(keys.spotify);
-  spotify.search({ type: 'track', query: song, query: artist, limit: 1 }, function (err, data) {
+  spotify.search({ type: 'track', query:artist+"+"+song, limit: 3 }, function (err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
     // console.log(data.albums.items);
     console.log("Artist: "+artist);
     console.log("Song: "+song);
-    // console.log(data);
-    console.log("Preview Link: "+ data.tracks.items[0].external_urls.spotify);
-    console.log("Album name: " + data.tracks.items[0].name);
+    console.log(data.tracks.items[0]);
+    console.log("Preview Link: "+ data.tracks.items[0].album.external_urls.spotify);
+    console.log("Album name: " + data.tracks.items[0].album.name);
   });
 }
 function movies() {
